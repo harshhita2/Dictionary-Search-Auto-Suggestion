@@ -4,56 +4,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WordWise | Dictionary Search</title>
+    <meta
+        name="description"
+        content="WordWise."
+    >
+    <title>WordWise | Dictionary Search & Auto-Suggestion</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
     <main class="container">
-
         <header class="hero">
-            <div class="logo">W</div>
+            <div class="logo" aria-hidden="true">W</div>
             <p class="eyebrow">YOUR SMART DICTIONARY</p>
-            <h1>WordWise</h1>
+            <h1>WordWise<span class="title-dot">.</span></h1>
             <p class="subtitle">
                 Dictionary Search & Auto-Suggestion System
             </p>
         </header>
-
-        <!-- Search Word -->
-        <section class="card">
+        <section class="card" aria-labelledby="searchHeading">
             <div class="section-heading">
                 <div>
                     <p class="eyebrow">LOOK IT UP</p>
-                    <h2>Search a Word</h2>
+                    <h2 id="searchHeading">Search a Word</h2>
                 </div>
                 <span class="badge">Case-insensitive</span>
             </div>
-
             <form id="searchForm" class="input-row">
+                <label class="sr-only" for="searchWord">
+                    Word to search
+                </label>
                 <input
-                    type="text"
+                    type="search"
                     id="searchWord"
                     placeholder="Enter a word, e.g. apple"
+                    autocomplete="off"
                     required
                 >
-                <button type="submit">Search Word</button>
+                <button type="submit" id="searchButton">
+                    <span aria-hidden="true">⌕</span>
+                    Search Word
+                </button>
             </form>
-
-            <div id="searchResult" class="message hidden"
-                 role="status"></div>
+            <div
+                id="searchResult"
+                class="message hidden"
+                role="status"
+                aria-live="polite"
+            ></div>
         </section>
-
-        <!-- Suggestions -->
-        <section class="card">
+        <section class="card" aria-labelledby="suggestHeading">
             <div class="section-heading">
                 <div>
                     <p class="eyebrow">DISCOVER WORDS</p>
-                    <h2>Auto-Suggestions</h2>
+                    <h2 id="suggestHeading">Auto-Suggestions</h2>
                 </div>
                 <span class="badge">Frequency ranked</span>
             </div>
-
+            <p class="section-description">
+                Start typing a prefix to discover matching words.
+            </p>
             <form id="suggestForm" class="suggest-form">
                 <div class="field prefix-field">
                     <label for="prefix">Enter Prefix</label>
@@ -61,10 +70,11 @@
                         type="text"
                         id="prefix"
                         placeholder="Try app"
+                        autocomplete="off"
+                        spellcheck="false"
                         required
                     >
                 </div>
-
                 <div class="field limit-field">
                     <label for="limit">Maximum (k)</label>
                     <input
@@ -76,56 +86,74 @@
                         required
                     >
                 </div>
-
-                <button type="submit">Get Suggestions</button>
+                <button type="submit" id="suggestButton">
+                    Get Suggestions
+                </button>
             </form>
-
-            <p class="hint">
-                Highest frequency first. Equal frequencies are sorted
-                alphabetically.
-            </p>
-
-            <div id="suggestionList" class="suggestion-list"
-                 aria-live="polite">
+            <div
+                id="suggestionList"
+                class="suggestion-list"
+                aria-live="polite"
+                aria-busy="false"
+            >
                 <p class="empty-state">
-                    Enter a prefix to discover matching words.
+                    Your matching words will appear here.
                 </p>
             </div>
         </section>
-
-        <!-- Add Word -->
-        <section class="card">
+        <section class="card" aria-labelledby="addHeading">
             <div class="section-heading">
                 <div>
                     <p class="eyebrow">EXPAND YOUR VOCABULARY</p>
-                    <h2>Add a New Word</h2>
+                    <h2 id="addHeading">Add a New Word</h2>
                 </div>
+                <span class="add-icon" aria-hidden="true">+</span>
             </div>
-
+            <p class="section-description">
+                Add a word to the dictionary. Existing words will not
+                be added again.
+            </p>
             <form id="addForm" class="input-row">
+                <label class="sr-only" for="newWord">
+                    New dictionary word
+                </label>
                 <input
                     type="text"
                     id="newWord"
                     placeholder="Enter a new word"
+                    autocomplete="off"
+                    spellcheck="false"
                     required
                 >
-                <button type="submit" class="secondary-button">
+                <button
+                    type="submit"
+                    id="addButton"
+                    class="secondary-button"
+                >
                     + Add Word
                 </button>
             </form>
-
-            <div id="addResult" class="message hidden"
-                 role="status"></div>
+            <div
+                id="addResult"
+                class="message hidden"
+                role="status"
+                aria-live="polite"
+            ></div>
         </section>
 
         <footer>
-            Built with HTML, CSS, JavaScript and Core Java.
-            <br>
-            W3Villa Technologies.
+            <div class="footer-brand">
+                <span class="footer-logo" aria-hidden="true">W</span>
+                <span>WordWise</span>
+            </div>
+            <p>
+                Built with HTML, CSS, JavaScript and Core Java.
+            </p>
+            <p class="footer-credit">
+                W3Villa Technologies
+            </p>
         </footer>
-
     </main>
-
     <script src="script.js"></script>
 </body>
 </html>
