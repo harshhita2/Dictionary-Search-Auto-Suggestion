@@ -1,34 +1,78 @@
 # Dictionary Search & Auto-Suggestion System
 
-## Overview
+## About the Project
 
-The **Dictionary Search & Auto-Suggestion System** is a Java-based application that allows users to search for words, receive prefix-based suggestions, and add new words to a dictionary. It tracks the search frequency of each word and ranks suggestions based on popularity.
+This project is a simple dictionary application built using Java. It allows users to check whether a word exists, add new words, and get suggestions while typing a prefix.
 
-The project uses a **Trie data structure** for efficient prefix-based searching and a **HashMap** to store word frequencies. It includes a web-based user interface built with HTML, CSS, and JavaScript, connected to a lightweight HTTP server implemented using Java's built-in HTTP server API.
+I also built a small web interface using HTML, CSS, and JavaScript so that the features can be tested through a browser instead of only using the terminal.
+
+The main goal of this project is to implement dictionary operations using suitable data structures and keep track of how frequently each word is searched.
 
 ## Features
 
-- **Exact Word Search:** Checks whether a word exists in the dictionary and returns `FOUND` or `NOT FOUND`.
-- **Search Frequency Tracking:** Increments the frequency of a word whenever an exact search succeeds.
-- **Auto-Suggestions:** Returns words beginning with a specified prefix.
-- **Frequency-Based Ranking:** Displays suggestions in descending order of search frequency.
-- **Alphabetical Tie-Breaking:** Sorts words alphabetically when their search frequencies are equal.
-- **Configurable Suggestion Limit:** Allows users to specify the maximum number of suggestions.
-- **Add New Words:** Adds new words with an initial frequency of 1.
-- **Duplicate Word Handling:** Displays `already exists` when a word is already present.
-- **Interactive Web Interface:** Provides forms for searching, adding words, and viewing live prefix suggestions.
-- **Input Normalization:** Trims surrounding whitespace and converts words to lowercase for case-insensitive operations.
+- Search for a word and get `FOUND` or `NOT FOUND`.
+- Increase the search frequency whenever an existing word is searched successfully.
+- Get suggestions based on the prefix entered by the user.
+- Show frequently searched words first.
+- Use alphabetical order when two words have the same frequency.
+- Add new words to the dictionary.
+- Display `already exists` if a word has already been added.
+- Choose the maximum number of suggestions to display.
+- Use the application through a web interface.
 
 ## Technologies Used
 
-- **Java (JDK 21):** Core application logic and HTTP server.
-- **HTML5:** Web page structure.
-- **CSS3:** Styling and responsive layout.
-- **JavaScript:** Frontend interactions and API requests.
-- **Data Structures:** Trie and HashMap.
-- **HTTP API:** Java's built-in `com.sun.net.httpserver.HttpServer`.
+- Java (JDK 21)
+- HTML
+- CSS
+- JavaScript
+- Java's built-in HTTP server
 
-No external Java libraries or web frameworks are required.
+No external Java libraries or web frameworks are used.
+
+## Data Structures
+
+### 1. Trie
+
+I used a Trie to store words character by character. It helps find words that start with a particular prefix without checking every word in the dictionary.
+
+For example, when the user enters `app`, the Trie can retrieve words such as `apple`, `apply`, and `application`.
+
+### 2. HashMap
+
+A HashMap stores each word along with its search frequency.
+
+For example:
+
+| Word | Frequency |
+|---|---:|
+| apple | 3 |
+| apply | 2 |
+| banana | 1 |
+
+Whenever a word is found through an exact search, its frequency increases by one. These frequencies are also used to rank suggestions.
+
+### 3. List and Sorting
+
+The matching words are collected into a list and sorted by:
+1. Search frequency, from highest to lowest.
+2. Alphabetical order when frequencies are equal.
+
+The application then returns up to the number of suggestions requested by the user.
+
+## How It Works
+
+### Searching a Word
+
+The application checks whether the entered word exists in the dictionary. If it does, the result is `FOUND` and its search frequency increases. Otherwise, the result is `NOT FOUND`.
+
+### Getting Suggestions
+
+The user enters a prefix and a limit, such as `app` and `5`. The Trie finds matching words, and the application sorts them by frequency and alphabetical order before displaying the results.
+
+### Adding a Word
+
+If the word is new, it is added to the dictionary with an initial frequency of `1`. If it already exists, the application returns `already exists` instead of adding it again.
 
 ## Project Structure
 
@@ -45,266 +89,91 @@ DictionarySearchSystem/
     └── script.js
 ```
 
-### File Descriptions
+- `Main.java` – Entry point for the console version.
+- `Dictionary.java` – Handles searching, adding words, and tracking frequencies.
+- `Trie.java` – Implements the Trie used for prefix searches.
+- `WebServer.java` – Handles API requests and serves the web interface.
+- `frontend/index.html` – Contains the page structure.
+- `frontend/style.css` – Contains the styling.
+- `frontend/script.js` – Connects the user interface to the backend.
 
-- **Main.java:** Provides the console-based entry point for testing dictionary operations.
-- **Dictionary.java:** Implements word storage, exact search, frequency tracking, adding words, and suggestion ranking.
-- **Trie.java:** Implements the Trie data structure used for prefix-based word retrieval.
-- **WebServer.java:** Starts the HTTP server, handles API requests, and serves frontend files.
-- **frontend/index.html:** Defines the user interface.
-- **frontend/style.css:** Provides styling and responsive layout.
-- **frontend/script.js:** Handles user interactions and communicates with the backend.
-- **README.md:** Documents the project and instructions for running and testing it.
+## How to Run the Project
 
-## Data Structures Used
+### Requirements
 
-### 1. Trie
+Make sure Java JDK 21 or a compatible JDK is installed.
 
-A Trie is a tree-like data structure used to store words character by character.
-
-Each node contains references to its child nodes, and complete words are marked at their ending nodes.
-
-**Why it is used:**
-- Efficiently locates the node corresponding to a given prefix.
-- Retrieves words that begin with a particular prefix.
-- Avoids scanning every dictionary word to identify matching prefixes.
-
-**Operations:**
-- Insert a word into the Trie.
-- Locate a prefix.
-- Collect complete words below the prefix node.
-
-### 2. HashMap
-
-A HashMap stores each word and its search frequency as a key-value pair.
-
-Example:
-
-```text
-apple  -> 3
-app     -> 2
-application -> 1
-```
-
-**Why it is used:**
-- Provides efficient average-case lookup and update operations.
-- Tracks how often each word is searched successfully.
-- Supplies the frequency values needed to rank suggestions.
-
-### 3. List and Sorting
-
-The words matching a prefix are collected into a list and sorted using the following rules:
-
-1. Higher search frequency comes first.
-2. If frequencies are equal, words are sorted alphabetically.
-3. Only the first `k` results are returned.
-
-## How the System Works
-
-### Exact Search
-
-1. The input word is trimmed and converted to lowercase.
-2. The system checks whether the word exists in the dictionary.
-3. If found, its search frequency is incremented by one and the result is `FOUND`.
-4. Otherwise, the result is `NOT FOUND`.
-
-### Prefix Suggestions
-
-1. The input prefix is normalized.
-2. The Trie locates the node representing the prefix.
-3. The system collects complete words beginning with that prefix.
-4. Matching words are sorted by descending search frequency.
-5. Alphabetical order is used to break ties.
-6. The system returns no more than `k` suggestions.
-
-### Adding a Word
-
-1. The input word is trimmed and converted to lowercase.
-2. If the word already exists, the system returns `already exists`.
-3. Otherwise, the word is inserted into the Trie and its frequency is initialized to `1`.
-
-## Getting Started
-
-### Prerequisites
-
-- Java Development Kit (JDK) 21 or compatible JDK.
-- Visual Studio Code or another Java-compatible editor.
-- A modern web browser.
-
-Verify your Java installation:
+Check your installation using:
 
 ```bash
 java -version
 javac -version
 ```
 
-### Installation
+### Step 1: Open the project folder
 
-Clone the repository:
+Open the project folder in VS Code and start a terminal in the root directory.
 
-```bash
-git clone https://github.com/harshhita2/Dictionary-Search-Auto-Suggestion.git
-```
-
-Navigate to the project directory:
-
-```bash
-cd Dictionary-Search-Auto-Suggestion
-```
-
-### Compile the Java Files
-
-Run the following command from the project root:
+### Step 2: Compile the Java files
 
 ```bash
 javac Main.java Dictionary.java Trie.java WebServer.java
 ```
 
-### Run the Web Application
-
-Start the HTTP server:
+### Step 3: Start the web server
 
 ```bash
 java WebServer
 ```
 
-When the server starts successfully, the terminal displays:
+When the server starts, the terminal should display a message indicating that it is listening on port `8081`.
 
-```text
-Server running at http://localhost:8081
-```
+### Step 4: Open the application
 
-Open the application in your browser:
+Open the following URL in your browser:
 
-**http://localhost:8081**
+http://localhost:8081
 
-Keep the terminal running while using the web application. Press `Ctrl + C` in the terminal to stop the server.
+Keep the terminal running while using the website. Press `Ctrl + C` to stop the server.
 
-> **Note:** If port 8081 is already occupied, update the port in `WebServer.java` and use the corresponding URL.
+### Running the Console Version
 
-### Run the Console Application
-
-To run the console entry point instead of the web application:
+To run the console entry point instead, use:
 
 ```bash
 java Main
 ```
 
-## API Endpoints
+## Testing the API
 
-The backend exposes the following HTTP endpoints:
+The application can also be tested through a browser or Postman.
 
-| Method | Endpoint | Purpose |
-|---|---|---|
-| GET | `/api/search?word=apple` | Searches for an exact word. |
-| GET | `/api/add?word=orange` | Adds a new word. |
-| GET | `/api/suggest?prefix=app&k=5` | Retrieves up to five suggestions. |
+| Endpoint | Purpose |
+|---|---|
+| `GET /api/search?word=apple` | Search for a word |
+| `GET /api/add?word=orange` | Add a word |
+| `GET /api/suggest?prefix=app&k=5` | Get up to five suggestions |
 
-### Example Responses
+For local testing, use `http://localhost:8081` as the base URL.
 
-**1. Exact search — word found**
+For example:
 
-```json
-{
-  "result": "FOUND",
-  "word": "apple",
-  "frequency": 2
-}
+```text
+http://localhost:8081/api/search?word=apple
+http://localhost:8081/api/add?word=orange
+http://localhost:8081/api/suggest?prefix=app&k=5
 ```
-
-**2. Exact search — word not found**
-
-```json
-{
-  "result": "NOT FOUND",
-  "word": "xyz",
-  "frequency": 0
-}
-```
-
-**3. Add a new word**
-
-```json
-{
-  "message": "Word added successfully",
-  "word": "orange",
-  "frequency": 1
-}
-```
-
-**4. Add an existing word**
-
-```json
-{
-  "message": "already exists",
-  "word": "apple"
-}
-```
-
-**5. Prefix suggestions**
-
-```json
-{
-  "suggestions": [
-    {
-      "word": "apple",
-      "frequency": 3
-    },
-    {
-      "word": "application",
-      "frequency": 2
-    },
-    {
-      "word": "app",
-      "frequency": 1
-    }
-  ]
-}
-```
-
-These are illustrative response examples; actual frequencies and results depend on the words stored and searches performed.
-
-## Testing
-
-The following scenarios can be used to verify the application:
-
-| Test Case | Action | Expected Result |
-|---|---|---|
-| Search existing word | Search for a word in the dictionary | `FOUND`; frequency increases |
-| Search missing word | Search for a word that does not exist | `NOT FOUND` |
-| Add new word | Add a word not in the dictionary | Word added with frequency `1` |
-| Add duplicate word | Add an existing word | `already exists` |
-| Prefix search | Enter a prefix such as `app` | Matching words are returned |
-| Frequency ranking | Search one matching word repeatedly | It ranks higher than less frequently searched words |
-| Tie-breaking | Compare words with equal frequencies | Alphabetical order is used |
-| No matching prefix | Enter a prefix with no matches | Empty suggestion list |
-| Suggestion limit | Request `k = 3` | At most three suggestions |
 
 ## Assumptions and Limitations
 
-- Word matching is case-insensitive.
-- Leading and trailing whitespace is ignored.
-- Search frequency increases only when an exact search succeeds.
+- Words are handled without considering letter case, provided the dictionary implementation normalizes them.
+- The search frequency increases only when an exact search succeeds.
 - Newly added words start with a frequency of `1`.
-- Duplicate words are not inserted again.
-- Suggestions are ranked by frequency, with alphabetical tie-breaking.
-- The suggestion limit is controlled by `k`.
-- The dictionary is maintained in application memory unless persistent storage is implemented separately.
-- No external database is required for the current implementation.
-- Search frequencies and newly added words may be lost when the application restarts if file or database persistence is not implemented.
-
-## Future Improvements
-
-- Persist dictionary words and frequencies using a database or file storage.
-- Add spell-checking and fuzzy matching.
-- Optimize suggestion ranking for very large dictionaries.
-- Add automated unit and integration tests.
-- Introduce dictionary import and export functionality.
+- Duplicate words are not added again.
+- Suggestions are sorted by frequency, with alphabetical order used to break ties.
+- The dictionary is stored in memory, so added words and search frequencies are not preserved when the application restarts.
+- The application starts with a few sample words, including `apple`, `apply`, `application`, `applet`, and `banana`.
 
 ## Author
 
-Developed as a project demonstrating data structures, Java programming, HTTP API development, and frontend-backend integration.
-
-## License
-
-This project was developed for educational and demonstration purposes.
+Developed as a programming assignment to practise Java, data structures, and basic frontend-backend integration.
