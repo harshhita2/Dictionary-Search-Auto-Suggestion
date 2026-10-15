@@ -1,0 +1,131 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WordWise | Dictionary Search</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <main class="container">
+
+        <header class="hero">
+            <div class="logo">W</div>
+            <p class="eyebrow">YOUR SMART DICTIONARY</p>
+            <h1>WordWise</h1>
+            <p class="subtitle">
+                Dictionary Search & Auto-Suggestion System
+            </p>
+        </header>
+
+        <!-- Search Word -->
+        <section class="card">
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">LOOK IT UP</p>
+                    <h2>Search a Word</h2>
+                </div>
+                <span class="badge">Case-insensitive</span>
+            </div>
+
+            <form id="searchForm" class="input-row">
+                <input
+                    type="text"
+                    id="searchWord"
+                    placeholder="Enter a word, e.g. apple"
+                    required
+                >
+                <button type="submit">Search Word</button>
+            </form>
+
+            <div id="searchResult" class="message hidden"
+                 role="status"></div>
+        </section>
+
+        <!-- Suggestions -->
+        <section class="card">
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">DISCOVER WORDS</p>
+                    <h2>Auto-Suggestions</h2>
+                </div>
+                <span class="badge">Frequency ranked</span>
+            </div>
+
+            <form id="suggestForm" class="suggest-form">
+                <div class="field prefix-field">
+                    <label for="prefix">Enter Prefix</label>
+                    <input
+                        type="text"
+                        id="prefix"
+                        placeholder="Try app"
+                        required
+                    >
+                </div>
+
+                <div class="field limit-field">
+                    <label for="limit">Maximum (k)</label>
+                    <input
+                        type="number"
+                        id="limit"
+                        min="1"
+                        max="100"
+                        value="5"
+                        required
+                    >
+                </div>
+
+                <button type="submit">Get Suggestions</button>
+            </form>
+
+            <p class="hint">
+                Highest frequency first. Equal frequencies are sorted
+                alphabetically.
+            </p>
+
+            <div id="suggestionList" class="suggestion-list"
+                 aria-live="polite">
+                <p class="empty-state">
+                    Enter a prefix to discover matching words.
+                </p>
+            </div>
+        </section>
+
+        <!-- Add Word -->
+        <section class="card">
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">EXPAND YOUR VOCABULARY</p>
+                    <h2>Add a New Word</h2>
+                </div>
+            </div>
+
+            <form id="addForm" class="input-row">
+                <input
+                    type="text"
+                    id="newWord"
+                    placeholder="Enter a new word"
+                    required
+                >
+                <button type="submit" class="secondary-button">
+                    + Add Word
+                </button>
+            </form>
+
+            <div id="addResult" class="message hidden"
+                 role="status"></div>
+        </section>
+
+        <footer>
+            Built with HTML, CSS, JavaScript and Core Java.
+            <br>
+            W3Villa Technologies.
+        </footer>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
